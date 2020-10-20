@@ -106,4 +106,4 @@ api.add_resource(GetCodeById, '/GetCode/<code_id>')
 
 api.add_resource(ExecuteCodeById, '/execute/<code_id>')
 
-app.run(port=4000, debug=True)
+app.run(host='0.0.0.0', port=5001)
