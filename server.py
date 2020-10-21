@@ -20,6 +20,7 @@ code = factorial(5)
 print(code)
 """
 
+
 # To Save the Record in DB
 class SaveSnippetCode(Resource):
     def post(self):
@@ -49,6 +50,7 @@ class SaveSnippetCode(Resource):
 
         return unique_id
 
+
 # To Get all the Records from DB
 class GetAllCodes(Resource):
     def get(self):
@@ -77,7 +79,6 @@ class GetCodeById(Resource):
         return return_data
 
 
-
 # To Execute the Code in DB and returns the Result
 class ExecuteCodeById(Resource):
     def post(self, code_id):
@@ -98,6 +99,23 @@ class ExecuteCodeById(Resource):
         return return_data
 
 
+class DeleteCodeById(Resource):
+    def post(self, code_id):
+        conn = sqlite3.connect('python_code_snippet_db.db')
+
+        cursor = conn.cursor()
+
+        query = "DELETE FROM CODE_SNIPPET WHERE id == %d " % int(code_id)
+
+        cursor.execute(query)
+
+        conn.commit()
+
+        return {
+            'message': ' Code Deleted Successfully '
+        }
+
+
 api.add_resource(SaveSnippetCode, '/Savecode')
 
 api.add_resource(GetAllCodes, '/GetAllCodes')
@@ -106,4 +124,7 @@ api.add_resource(GetCodeById, '/GetCode/<code_id>')
 
 api.add_resource(ExecuteCodeById, '/execute/<code_id>')
 
-app.run(host='0.0.0.0', port=5001)
+api.add_resource(DeleteCodeById, '/delete/<code_id>')
+
+
+app.run(host='0.0.0.0', port=5001, debug=True)
